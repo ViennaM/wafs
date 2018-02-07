@@ -4,6 +4,9 @@
       init: function () {
         routes.init()
         blocks.toggle(window.location.hash)
+        document.querySelector('a').addEventListener((e) => {
+          e.preventdefault()
+        })
       }
     }
 
@@ -18,8 +21,7 @@
     const blocks = {
       toggle: function (route) {
         const sections = document.querySelectorAll('section')
-        
-        let active = document.querySelector(`${route}`)
+        let active = document.querySelector(route)
         
         sections.forEach(function(section) {
             section.classList.remove('active')

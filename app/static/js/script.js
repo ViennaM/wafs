@@ -3,17 +3,14 @@
     const app = {
       init: function () {
         routes.init()
-        blocks.toggle(window.location.hash)
-        document.querySelector('a').addEventListener((e) => {
-          e.preventdefault()
-        })
+        blocks.toggle(location.hash)
       }
     }
 
     const routes = {
       init: function () {
             window.addEventListener('hashchange', () => {
-            blocks.toggle(window.location.hash)
+            blocks.toggle(location.hash)
         })
       }
     }

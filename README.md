@@ -37,8 +37,11 @@ The course repo for 'Web App From Scratch'
 
 #### Bronnen
 [https://1stwebdesigner.com/web-frameworks/](https://1stwebdesigner.com/web-frameworks/)
+
 [https://davidwalsh.name/6-reasons-to-use-javascript-libraries-frameworks](https://davidwalsh.name/6-reasons-to-use-javascript-libraries-frameworks)
+
 [https://adamsilver.io/articles/the-disadvantages-of-single-page-applications/](https://adamsilver.io/articles/the-disadvantages-of-single-page-applications/)
+
 [https://www.codeschool.com/beginners-guide-to-web-development/single-page-applications](https://www.codeschool.com/beginners-guide-to-web-development/single-page-applications)
 
 ## Best practices

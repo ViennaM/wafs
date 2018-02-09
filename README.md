@@ -1,5 +1,6 @@
 # wafs
 The course repo for 'Web App From Scratch'
+Week 1: [https://viennam.github.io/wafs/week1](https://viennam.github.io/wafs/week1)
 
 ## De voor- en nadelen van JavaScript libraries/frameworks
 ### Voordelen

@@ -1,105 +1,161 @@
 (function () {
-
-  // App
-  const app = {
+  var app = {
     init: function () {
       routes.init()
       this.handleEvents()
     },
     handleEvents: function () {
-      document.querySelectorAll("nav a").forEach(function (element){
-        element.addEventListener("click", function(event) {
-            event.preventDefault()
-            location.hash = this.hash
+      // Prevent default
+      document.querySelectorAll("nav a").forEach(function (element) {
+        element.addEventListener("click", function (event) {
+          event.preventDefault()
+          location.hash = this.hash
         })
       })
       document.querySelector('.random').addEventListener('click', () => {
-        api.load()
+        random.init()
       })
     }
   }
 
-  // Routes 
-  const routes = {
+  var routes = {
     init: function () {
       routie({
-        'start': function () {
-          api.load()
-          sections.toggle(location.hash)
-        },
-        'start/:breed?': function (breed) { 
-          sections.toggle('#detail')
-          console.log(breed)
+        'home': function () {
+          home.init()
         },
         'random': function () {
-          api.load()
-          sections.toggle(location.hash)
+          random.init()
+        },
+        'home/:breed?': function (breed) {
+          detail.init(breed)
         }
       })
     }
   }
 
-  // Render section from hash
-  const sections = {
+  var home = {
+    init: function () {
+      template.toggle(location.hash)
+      var data = api.getData('home', home)
+    },
+    render: function (data) {
+      var list
+      data.forEach(function (item) {
+        var img = api.getImg(item)
+        console.log(item)
+        list += `
+        <li>
+          <img src="gggg">
+          <a href="#home/${item}">${item}</a>
+        </li>
+        `
+      })
+      document.querySelector('#list').innerHTML = list
+    }
+  }
+
+  var random = {
+    init: function () {
+      template.toggle(location.hash)
+      var data = api.getData('random', random)
+    },
+    render: function (data) {
+      document.querySelector('#image').src = data
+    }
+  }
+
+  var detail = {
+    init: function (breed) {
+      template.toggle('#detail')
+      var data = api.getData('detail', detail, breed)
+      
+    },
+    render: function (data, breed) {
+      var list
+      data.forEach(function (item) {
+        list += `
+        <li>
+          <img src="${item}">
+        </li>
+        `
+      })
+      document.querySelector('#detail').innerHTML = `
+        <h1>${breed}</h1>
+        <a href="#home">terug</a>
+        <ul>${list}</ul>
+        `
+    }
+  }
+
+  var api = {
+    getData: function (section, page, breed) {
+      var url = function () {
+        if (section == 'home') {
+          return 'https://dog.ceo/api/breeds/list'
+        } else if (section == 'random') {
+          return 'https://dog.ceo/api/breeds/image/random'
+        } else if (section == 'detail') {
+          return `https://dog.ceo/api/breed/${breed}/images`
+        }
+      }
+      var request = new XMLHttpRequest()
+      request.open('GET', url(), true)
+      request.onload = function () {
+        if (request.status >= 200 && request.status < 400) {
+          // Success!
+          var data = JSON.parse(request.responseText)
+
+          page.render(data.message, breed)
+
+        } else {
+          // Error
+        }
+      }
+      request.onerror = function () {
+        // There was a connection error of some sort
+      }
+      request.send()
+    },
+    getImg: function (breed) {
+      var url = `https://dog.ceo/api/breed/${breed}/images/random`
+      var request = new XMLHttpRequest()
+      var img
+      request.open('GET', url, true)
+      request.onload = function () {
+        if (request.status >= 200 && request.status < 400) {
+          // Success!
+          var data = JSON.parse(request.responseText)
+
+          console.log(data)
+
+        } else {
+          // Error
+        }
+      }
+      request.onerror = function () {
+        // There was a connection error of some sort
+      }
+      request.send()
+    }
+  }
+
+  var template = {
+    init: function () {
+      this.toggle(location.hash)
+    },
     toggle: function (route) {
-      const sections = document.querySelectorAll('section')
-      let active = document.querySelector(route)
+      // Show section from hash
+      var sections = document.querySelectorAll('section')
+      var active = document.querySelector(route)
       sections.forEach(function (section) {
         section.classList.remove('active')
       })
       active.classList.add('active')
+    },
+    render: function (data) {
+      if (location.hash === '#home') {}
     }
   }
-
-  // Dog api
-  const api = {
-    load: function () {
-      const url = {
-        breeds: 'https://dog.ceo/api/breeds/list',
-        random: 'https://dog.ceo/api/breeds/image/random'
-      }
-    
-      const request = new XMLHttpRequest()
-      location.hash === '#start' ? request.open('GET', url.breeds, true) : request.open('GET', url.random, true)
-      
-      request.onload = function() {
-        if (request.status >= 200 && request.status < 400) {
-        // Success!
-          var data = JSON.parse(request.responseText)
-
-          function toObject(arr) {
-            var rv = [];
-            for (var i = 0; i < arr.length; ++i) {
-              let x = {}
-              x.breed = arr[i]
-              rv.push(x)
-            }
-            return rv;
-          }
-
-          if (location.hash === '#start') {
-
-            var breed = toObject(data.message)
-            Transparency.render(document.getElementById('breeds'), breed);
-
-          } else if (location.hash === '#random') {
-
-            document.querySelector('#image').src = data.message
-
-          }
-
-        } else {
-        // We reached our target server, but it returned an error
-        }
-      };
-    
-      request.onerror = function() {
-      // There was a connection error of some sort
-      };
-    
-      request.send();
-    }
-  }
-
   app.init()
 })()

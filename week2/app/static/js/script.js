@@ -20,9 +20,10 @@
         })
       })
       document.querySelector('.random').addEventListener('click', () => {
-        random.init()
+        random.init() 
       })
     }
+    
   }
 
   var routes = {
@@ -64,7 +65,7 @@
       })
     },
     render: function (data) {
-      var list
+      var list = ''
       data.forEach(function (item) {
         list += `
         <li>
@@ -103,7 +104,7 @@
 
     },
     render: function (data, breed) {
-      var list
+      var list = ''
       data.slice(0, 5).forEach(function (item) {
         list += `
         <li>
@@ -156,9 +157,6 @@
   }
 
   var template = {
-    init: function () {
-      this.toggle(location.hash)
-    },
     toggle: function (route) {
       // Show section from hash
       var sections = document.querySelectorAll('section')
@@ -172,5 +170,6 @@
       if (location.hash === '#home') {}
     }
   }
+
   app.init()
 })()

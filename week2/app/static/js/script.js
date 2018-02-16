@@ -11,7 +11,7 @@
       this.handleEvents()
     },
     handleEvents: function () {
-      location.hash = "#home"
+      location.hash = document.querySelectorAll("nav li")[0].querySelector("a").hash
       // Prevent default
       document.querySelectorAll("nav a").forEach(function (element) {
         element.addEventListener("click", function (event) {
@@ -49,17 +49,6 @@
         if (result.status >= 200 && result.status < 400) {
           var data = JSON.parse(result.responseText)
           var breedArr = data.message
-          console.log(breedArr)
-          // breedArr.forEach(function (breed, i) {
-          //   api.getImg(breed).then(function (result) {
-          //     if (result.status >= 200 && result.status < 400) {
-          //       var data = JSON.parse(result.responseText)
-          //       console.log(breedArr)
-          //       var imgArr = data.message
-          //       home.render(breedArr, imgArr)
-          //     }
-          //   })
-          // })
           home.render(breedArr)
         }
       })
@@ -157,17 +146,17 @@
   }
 
   var template = {
-    toggle: function (route) {
-      // Show section from hash
+    hideSections: function() {
       var sections = document.querySelectorAll('section')
-      var active = document.querySelector(route)
       sections.forEach(function (section) {
         section.classList.remove('active')
       })
-      active.classList.add('active')
     },
-    render: function (data) {
-      if (location.hash === '#home') {}
+    toggle: function (route) {
+      // Show section from hash
+      var active = document.querySelector(route)
+      this.hideSections()
+      active.classList.add('active')
     }
   }
 

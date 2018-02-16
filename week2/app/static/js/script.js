@@ -19,11 +19,11 @@
           location.hash = this.hash
         })
       })
-      document.querySelector('.random').addEventListener('click', () => {
-        random.init() 
+      document.querySelector('#refresh').addEventListener('click', () => {
+        random.init()
       })
     }
-    
+
   }
 
   var routes = {

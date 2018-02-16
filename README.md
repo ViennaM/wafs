@@ -69,3 +69,10 @@ Week 2: [https://viennam.github.io/wafs/week2/app](https://viennam.github.io/waf
 16/02/2018
 
 [Pull request Koos](https://github.com/hackshackshacks/wafs/pull/4)
+
+## To do
+
+- [ ] Random afbeelding van ras in lijst toevoegen
+- [ ] Loader toevoegen
+- [ ] Lijsten stylen
+- [ ] Navigatie item active maken

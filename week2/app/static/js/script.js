@@ -1,10 +1,17 @@
+// SOS:
+// - Lijsten geven eerst 'undefined' terug
+// - Random plaatje van ras (api.getImg) 
+// - Plaatje op #random verspringt vanuit #home
+
 (function () {
+  'use strict'
   var app = {
     init: function () {
       routes.init()
       this.handleEvents()
     },
     handleEvents: function () {
+      location.hash = "#home"
       // Prevent default
       document.querySelectorAll("nav a").forEach(function (element) {
         element.addEventListener("click", function (event) {
@@ -37,16 +44,30 @@
   var home = {
     init: function () {
       template.toggle(location.hash)
-      var data = api.getData('home', home)
+      api.getData('home', home).then(function (result) {
+        if (result.status >= 200 && result.status < 400) {
+          var data = JSON.parse(result.responseText)
+          var breedArr = data.message
+          console.log(breedArr)
+          // breedArr.forEach(function (breed, i) {
+          //   api.getImg(breed).then(function (result) {
+          //     if (result.status >= 200 && result.status < 400) {
+          //       var data = JSON.parse(result.responseText)
+          //       console.log(breedArr)
+          //       var imgArr = data.message
+          //       home.render(breedArr, imgArr)
+          //     }
+          //   })
+          // })
+          home.render(breedArr)
+        }
+      })
     },
     render: function (data) {
       var list
       data.forEach(function (item) {
-        var img = api.getImg(item)
-        console.log(item)
         list += `
         <li>
-          <img src="gggg">
           <a href="#home/${item}">${item}</a>
         </li>
         `
@@ -58,7 +79,12 @@
   var random = {
     init: function () {
       template.toggle(location.hash)
-      var data = api.getData('random', random)
+      api.getData('random', random).then(function (result) {
+        if (result.status >= 200 && result.status < 400) {
+          var data = JSON.parse(result.responseText)
+          random.render(data.message)
+        }
+      })
     },
     render: function (data) {
       document.querySelector('#image').src = data
@@ -68,12 +94,17 @@
   var detail = {
     init: function (breed) {
       template.toggle('#detail')
-      var data = api.getData('detail', detail, breed)
-      
+      api.getData('detail', detail, breed).then(function (result) {
+        if (result.status >= 200 && result.status < 400) {
+          var data = JSON.parse(result.responseText)
+          detail.render(data.message, breed)
+        }
+      })
+
     },
     render: function (data, breed) {
       var list
-      data.forEach(function (item) {
+      data.slice(0, 5).forEach(function (item) {
         list += `
         <li>
           <img src="${item}">
@@ -99,45 +130,29 @@
           return `https://dog.ceo/api/breed/${breed}/images`
         }
       }
-      var request = new XMLHttpRequest()
-      request.open('GET', url(), true)
-      request.onload = function () {
-        if (request.status >= 200 && request.status < 400) {
-          // Success!
-          var data = JSON.parse(request.responseText)
-
-          page.render(data.message, breed)
-
-        } else {
-          // Error
+      return new Promise(function (resolve, reject) {
+        var request = new XMLHttpRequest()
+        request.open('GET', url(), true)
+        request.onload = function () {
+          resolve(request)
         }
-      }
-      request.onerror = function () {
-        // There was a connection error of some sort
-      }
-      request.send()
+        request.onerror = function () {}
+        request.send()
+      })
     },
     getImg: function (breed) {
       var url = `https://dog.ceo/api/breed/${breed}/images/random`
-      var request = new XMLHttpRequest()
-      var img
-      request.open('GET', url, true)
-      request.onload = function () {
-        if (request.status >= 200 && request.status < 400) {
-          // Success!
-          var data = JSON.parse(request.responseText)
-
-          console.log(data)
-
-        } else {
-          // Error
+      return new Promise(function (resolve, reject) {
+        var request = new XMLHttpRequest()
+        request.open('GET', url, true)
+        request.onload = function () {
+          resolve(request)
         }
-      }
-      request.onerror = function () {
-        // There was a connection error of some sort
-      }
-      request.send()
+        request.onerror = function () {}
+        request.send()
+      })
     }
+
   }
 
   var template = {

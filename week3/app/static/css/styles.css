@@ -1,6 +1,7 @@
 * {
     box-sizing: border-box;
 }
+
 body {
     background: #eee;
     width: 100%;
@@ -47,6 +48,14 @@ section {
     display: block;
 }
 
+
 img {
     max-width: 100%;
+}
+
+.loader {
+    width: 100%;
+}
+.hide {
+    display: none;
 }

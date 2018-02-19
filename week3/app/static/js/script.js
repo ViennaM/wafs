@@ -1,9 +1,12 @@
 (function () {
   'use strict'
+
+  // General app object
   var app = {
     init: function () {
       routes.init()
-    }
+    },
+    dataStorage: []
   }
 
   var routes = {
@@ -15,19 +18,22 @@
         'random': function () {
           template.init('random')
         },
+        // Detail page of a breed from list
         'home/:breed?': function (breed) {
           template.init('detail', breed)
         },
+        // Go directly to app's home
         '': function () {
-          location.hash = '#home'
+          routie('home')
         }
       })
-      
     }
   }
 
+  // Api functions
   var api = {
     getData: function (page, breed) {
+      // Set api url
       if (page === 'home') {
         var url = 'https://dog.ceo/api/breeds/list'
       } else if (page === 'random') {
@@ -41,40 +47,45 @@
         request.onload = function () {
           resolve(request)
         }
-        request.onerror = function () {}
+        request.onerror = function () {
+          reject('error')
+        }
         request.send()
       })
-    },
-    collectData: []
+    }
   }
 
   var template = {
     init: function (page, breed) {
       var curBreed = breed
-      if (page === 'home' && api.collectData.length > 0) {
-        template.handleData(api.collectData, curBreed)
+      // Handle list data from data storage when available
+      if (page === 'home' && app.dataStorage.length > 0) {
+        template.handleData(app.dataStorage, curBreed)
       } else {
-        console.log('doei')
         api.getData(page, breed)
+          // Promise resolved (data received)
           .then(function (data) {
             template.handleData(data, curBreed)
           })
+          // Promise rejected (no data received)
           .catch(function () {
             console.log('errorrrertje')
           })
       }
-
       this.toggle(page)
     },
+
     handleData: function (result, breed) {
       if (result.status >= 200 && result.status < 400) {
         var data = JSON.parse(result.responseText)
+        // Handle received data for page: home
         if (location.hash === '#home') {
-          if (!api.collectData) {
-            api.collectData.push(data.message)
+          // Store list data in memory
+          if (app.dataStorage.length == 0) {
+            app.dataStorage.push(data.message)
           }
           var breedArr = data.message
-          api.collectData = data.message
+          app.dataStorage = data.message
           var html = '<ul>'
           breedArr.forEach(function (breed, i) {
             html += `
@@ -86,12 +97,17 @@
           html += '</ul>'
           document.querySelector('#home .loader').classList.add('hide')
           this.render(html)
-        } else if (location.hash === '#random') {
+        }
+        // Handle received data for page: random
+        else if (location.hash === '#random') {
           html = `<img src="${data.message}">`
           document.querySelector('#random .loader').classList.add('hide')
           this.render(html)
-        } else {
+        }
+        // Handle received data for page: detail
+        else {
           var html = `<h1>${breed}</h1>`
+          // Shuffle images array and only show the first 15
           helper.shuffle(data.message).slice(0, 15).forEach(function (img) {
             html += `
             <img src="${img}">
@@ -102,6 +118,7 @@
         }
       }
     },
+    // Hide all sections
     hideSections: function () {
       var sections = document.querySelectorAll('section')
       sections.forEach(function (section) {
@@ -109,7 +126,7 @@
       })
     },
     toggle: function (page) {
-      // Show section from hash
+      // Show current section
       if (page === 'detail') {
         var active = document.querySelector('#detail')
       } else {
@@ -136,7 +153,7 @@
   }
 
   var helper = {
-    // https://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array
+    // Shuffle items in an array, from: https://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array
     shuffle: function (a) {
       for (let i = a.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -146,5 +163,6 @@
     }
   }
 
+  // Start the app!
   app.init()
 })()

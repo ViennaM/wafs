@@ -22,6 +22,7 @@
           location.hash = '#home'
         }
       })
+      
     }
   }
 
@@ -50,22 +51,28 @@
   var template = {
     init: function (page, breed) {
       var curBreed = breed
-      this.toggle(page)
-      if (page === 'home' && api.collectedData) {
-        console.log('kaas')
-      } else
+      if (page === 'home' && api.collectData.length > 0) {
+        template.handleData(api.collectData, curBreed)
+      } else {
+        console.log('doei')
         api.getData(page, breed)
-        .then(function (data) {
-          template.handleData(data, curBreed)
-        })
-        .catch(function () {
-          console.log('errorrr')
-        })
+          .then(function (data) {
+            template.handleData(data, curBreed)
+          })
+          .catch(function () {
+            console.log('errorrrertje')
+          })
+      }
+
+      this.toggle(page)
     },
     handleData: function (result, breed) {
       if (result.status >= 200 && result.status < 400) {
         var data = JSON.parse(result.responseText)
         if (location.hash === '#home') {
+          if (!api.collectData) {
+            api.collectData.push(data.message)
+          }
           var breedArr = data.message
           api.collectData = data.message
           var html = '<ul>'
@@ -90,6 +97,7 @@
             <img src="${img}">
             `
           })
+          document.querySelector('#detail .loader').classList.add('hide')
           this.render(html, breed)
         }
       }
@@ -115,19 +123,15 @@
     render: function (html, breed) {
       if (breed) {
         var content = document.querySelector('#detail .content')
-        // Remove previous content before adding new content
-        while (content.firstChild) {
-          content.removeChild(content.firstChild)
-        }
-        content.insertAdjacentHTML('beforeend', html)
       } else {
         var content = document.querySelector(location.hash + ' .content')
-        // Remove previous content before adding new content
-        while (content.firstChild) {
-          content.removeChild(content.firstChild)
-        }
-        content.insertAdjacentHTML('beforeend', html)
       }
+      // Remove previous content before adding new content
+      while (content.firstChild) {
+        content.removeChild(content.firstChild)
+      }
+      content.insertAdjacentHTML('beforeend', html)
+      document.querySelector('#home .loader').classList.add('hide')
     }
   }
 

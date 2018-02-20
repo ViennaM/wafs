@@ -1,3 +1,7 @@
+// To do:
+// - Data management (search for a specific breed)
+// - Modules
+
 (function () {
   'use strict'
 
@@ -52,30 +56,8 @@
         }
         request.send()
       })
-    }
-  }
-
-  var template = {
-    init: function (page, breed) {
-      var curBreed = breed
-      // Handle list data from data storage when available
-      if (page === 'home' && app.dataStorage.length > 0) {
-        template.handleData(app.dataStorage, curBreed)
-      } else {
-        api.getData(page, breed)
-          // Promise resolved (data received)
-          .then(function (data) {
-            template.handleData(data, curBreed)
-          })
-          // Promise rejected (no data received)
-          .catch(function () {
-            console.log('errorrrertje')
-          })
-      }
-      this.toggle(page)
     },
-
-    handleData: function (result, breed) {
+    handleData: function (result, breed, page) {
       if (result.status >= 200 && result.status < 400) {
         var data = JSON.parse(result.responseText)
         // Handle received data for page: home
@@ -84,39 +66,80 @@
           if (app.dataStorage.length == 0) {
             app.dataStorage.push(data.message)
           }
-          var breedArr = data.message
-          app.dataStorage = data.message
-          var html = '<ul>'
-          breedArr.forEach(function (breed, i) {
-            html += `
-            <li>
-              <a href="#home/${breed}">${breed}</a>
-            </li>
-            `
-          })
-          html += '</ul>'
-          document.querySelector('#home .loader').classList.add('hide')
-          this.render(html)
+          template.home(data.message)
         }
         // Handle received data for page: random
         else if (location.hash === '#random') {
-          html = `<img src="${data.message}">`
-          document.querySelector('#random .loader').classList.add('hide')
-          this.render(html)
+          template.random(data.message)
         }
         // Handle received data for page: detail
         else {
-          var html = `<h1>${breed}</h1>`
+          template.detail(data.message, breed, page)
+        }
+      }
+    }
+  }
+
+  var template = {
+    init: function (page, breed) {
+      if (breed) {
+        var content = document.querySelector('#detail .content')
+      } else {
+        var content = document.querySelector(location.hash + ' .content')
+      }
+      // Remove previous content before adding new content
+      while (content.firstChild) {
+        content.removeChild(content.firstChild)
+      }
+      var curBreed = breed
+      var curPage = page
+      // Handle list data from data storage when available
+      if (page === 'home' && app.dataStorage.length > 0) {
+        this.home(app.dataStorage)
+      } else {
+        document.querySelector(`#${page} .loader`).classList.remove('hide')
+        api.getData(page, breed)
+          // Promise resolved 
+          .then(function (data) {
+            api.handleData(data, curBreed, page)
+          })
+          // Catch errors
+          .catch(function (err) {
+            console.log(err)
+          })
+      }
+      this.toggle(page)
+    },
+    home: function(data) {
+      var breedArr = data
+      app.dataStorage = data
+      var html = '<ul>'
+      breedArr.forEach(function (breed, i) {
+        html += `
+        <li>
+          <a href="#home/${breed}">${breed}</a>
+        </li>
+        `
+      })
+      html += '</ul>'
+      this.render(html)
+    },
+    random: function(data) {
+      document.querySelector('#refresh').addEventListener('click', function() {
+        template.init('random')
+      })
+      var html = `<img src="${data}">`
+          this.render(html)
+    },
+    detail: function(data, breed, page) {
+      var html = `<h1>${breed}</h1>`
           // Shuffle images array and only show the first 15
-          helper.shuffle(data.message).slice(0, 15).forEach(function (img) {
+          helper.shuffle(data).slice(0, 15).forEach(function (img) {
             html += `
             <img src="${img}">
             `
           })
-          document.querySelector('#detail .loader').classList.add('hide')
-          this.render(html, breed)
-        }
-      }
+          this.render(html, breed, page)
     },
     // Hide all sections
     hideSections: function () {
@@ -135,20 +158,21 @@
       }
       this.hideSections()
       active.classList.add('active')
-      document.querySelector('.loader').classList.remove('hide')
     },
-    render: function (html, breed) {
+    render: function (html, breed, page) {
       if (breed) {
         var content = document.querySelector('#detail .content')
       } else {
         var content = document.querySelector(location.hash + ' .content')
       }
-      // Remove previous content before adding new content
-      while (content.firstChild) {
-        content.removeChild(content.firstChild)
+      // Define element ID for hiding loader
+      if (page) {
+        var elId = '#detail'
+      } else {
+        var elId = location.hash
       }
+      document.querySelector(elId + ' .loader').classList.add('hide')
       content.insertAdjacentHTML('beforeend', html)
-      document.querySelector('#home .loader').classList.add('hide')
     }
   }
 

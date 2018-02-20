@@ -1,5 +1,8 @@
 // To do:
 // - Modules
+// - ES6
+// - Navigation active 
+// - CSS
 
 (function () {
   'use strict'

@@ -1,6 +1,5 @@
 // To do:
 // - Modules
-// - Fix random doggos
 
 (function () {
   'use strict'
@@ -9,6 +8,21 @@
   var app = {
     init: function () {
       routes.init()
+      this.handleEvents()
+    },
+    elements: {
+      input: document.querySelector('#search'),
+      refresh: document.querySelector('#refresh')
+    },
+    handleEvents: function(){
+      app.elements.refresh.addEventListener('click', function () {
+        template.init('random')
+      })
+      // Trigger search function on key up
+      app.elements.input.addEventListener('input', function () {
+        template.search(app.dataStorage, app.elements.input.value.toLowerCase())
+      })
+      
     },
     dataStorage: []
   }
@@ -20,6 +34,7 @@
           template.init('home')
         },
         'random': function () {
+          console.log('hoi')
           template.init('random')
         },
         // Detail page of a breed from list
@@ -92,12 +107,7 @@
       while (content.firstChild) {
         content.removeChild(content.firstChild)
       }
-      // Trigger search function on key up
-      var input = document.querySelector('#search')
-      input.addEventListener('keyup', function () {
-        template.search(app.dataStorage, input.value.toLowerCase())
-      })
-      input.value = ''
+      app.elements.input.value = ''
       var curBreed = breed,
           curPage = page
       // Handle list data from data storage when available
@@ -143,9 +153,6 @@
       this.render(html)
     },
     random: function (data) {
-      document.querySelector('#refresh').addEventListener('click', function () {
-        template.init('random')
-      })
       var html = `<img src="${data}">`
       this.render(html)
     },
@@ -191,7 +198,13 @@
         var elId = location.hash
       }
       document.querySelector(elId + ' .loader').classList.add('hide')
-      content.insertAdjacentHTML('beforeend', html)
+
+      // Check if html to render is more than <ul></ul>
+      if(html.length > 9) {
+        content.insertAdjacentHTML('beforeend', html)
+      } else {
+        content.insertAdjacentHTML('beforeend', 'Nothing found...')
+      }
     }
   }
 

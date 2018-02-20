@@ -1,6 +1,6 @@
 // To do:
-// - Data management (search for a specific breed)
 // - Modules
+// - Fix random doggos
 
 (function () {
   'use strict'
@@ -53,6 +53,7 @@
         }
         request.onerror = function () {
           reject('error')
+          template.render('Nothing found...')
         }
         request.send()
       })
@@ -64,7 +65,7 @@
         if (location.hash === '#home') {
           // Store list data in memory
           if (app.dataStorage.length == 0) {
-            app.dataStorage.push(data.message)
+            app.dataStorage = data.message
           }
           template.home(data.message)
         }
@@ -91,8 +92,14 @@
       while (content.firstChild) {
         content.removeChild(content.firstChild)
       }
-      var curBreed = breed
-      var curPage = page
+      // Trigger search function on key up
+      var input = document.querySelector('#search')
+      input.addEventListener('keyup', function () {
+        template.search(app.dataStorage, input.value)
+      })
+      input.value = ''
+      var curBreed = breed,
+          curPage = page
       // Handle list data from data storage when available
       if (page === 'home' && app.dataStorage.length > 0) {
         this.home(app.dataStorage)
@@ -110,36 +117,48 @@
       }
       this.toggle(page)
     },
-    home: function(data) {
+    search: function (data, value) {
+      var newData = data.filter(function (breed) {
+        return breed.includes(value)
+      })
+      var content = document.querySelector(location.hash + ' .content')
+      
+      // Remove previous content before adding new content
+      while (content.firstChild) {
+        content.removeChild(content.firstChild)
+      }
+      template.home(newData)
+    },
+    home: function (data) {
       var breedArr = data
-      app.dataStorage = data
       var html = '<ul>'
       breedArr.forEach(function (breed, i) {
         html += `
         <li>
-          <a href="#home/${breed}">${breed}</a>
+          <a href="#home/${breed}">${helper.capitalize(breed)}</a>
         </li>
         `
       })
       html += '</ul>'
       this.render(html)
     },
-    random: function(data) {
-      document.querySelector('#refresh').addEventListener('click', function() {
+    random: function (data) {
+      document.querySelector('#refresh').addEventListener('click', function () {
         template.init('random')
       })
       var html = `<img src="${data}">`
-          this.render(html)
+      this.render(html)
     },
-    detail: function(data, breed, page) {
+    detail: function (data, breed, page) {
+      var breed = helper.capitalize(breed)
       var html = `<h1>${breed}</h1>`
-          // Shuffle images array and only show the first 15
-          helper.shuffle(data).slice(0, 15).forEach(function (img) {
-            html += `
+      // Shuffle images array and only show the first 15
+      helper.shuffle(data).slice(0, 15).forEach(function (img) {
+        html += `
             <img src="${img}">
             `
-          })
-          this.render(html, breed, page)
+      })
+      this.render(html, breed, page)
     },
     // Hide all sections
     hideSections: function () {
@@ -184,6 +203,10 @@
         [a[i], a[j]] = [a[j], a[i]];
       }
       return a;
+    },
+    // Capitalize first letter in string, from: https://stackoverflow.com/questions/1026069/how-do-i-make-the-first-letter-of-a-string-uppercase-in-javascript
+    capitalize: function (string) {
+      return string.charAt(0).toUpperCase() + string.slice(1)
     }
   }
 

@@ -52,7 +52,7 @@ section {
 }
 
 img {
-    max-width: 100%;
+    width: 100%;
 }
 
 .loader {
@@ -82,4 +82,10 @@ img {
 
 #home li a:hover {
     background: #ddd;
+}
+
+input {
+    width: 100%;
+    padding: 1em;
+    font-size: 1em;
 }

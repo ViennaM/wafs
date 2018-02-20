@@ -95,7 +95,7 @@
       // Trigger search function on key up
       var input = document.querySelector('#search')
       input.addEventListener('keyup', function () {
-        template.search(app.dataStorage, input.value)
+        template.search(app.dataStorage, input.value.toLowerCase())
       })
       input.value = ''
       var curBreed = breed,

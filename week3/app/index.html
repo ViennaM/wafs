@@ -9,6 +9,8 @@ https://imgur.com/gallery/YbkBxYb -->
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="static/css/styles.css">
     <link href="https://fonts.googleapis.com/css?family=Hind" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/solid.css" rel="stylesheet">
+    <link rel="shortcut icon" type="image/png" href="static/img/favicon.png"/>
     <title>Dog breeds</title>
   </head>
 
@@ -16,16 +18,18 @@ https://imgur.com/gallery/YbkBxYb -->
     <nav>
       <ul>
         <li>
-          <a href="#home">All breeds</a>
+          <a href="#home">🐕 All breeds</a>
         </li>
         <li>
-          <a href="#random" class="random">Random</a>
+          <a href="#random" class="random">🐶 Random</a>
         </li>
       </ul>
     </nav>
     <section id="home" class="active">
-      <h1>All dog breeds</h1>
-      <input type="text" id="search" placeholder="Search for a breed...">
+      <h1>🐕 All dog breeds</h1>
+      <div class="search">
+        <input type="text" id="search" placeholder="Search for a breed...">
+      </div>
       <div class="loader hide"><img src="static/img/loader.gif" alt=""></div>
       <div class="content">
 
@@ -33,13 +37,13 @@ https://imgur.com/gallery/YbkBxYb -->
     </section>
 
     <section id="detail">
-      <a href="#home">terug</a>
+      <a href="#home" class="terug">terug</a>
       <div class="loader hide"><img src="static/img/loader.gif" alt=""></div>
       <div class="content"></div>
     </section>
 
     <section id="random">
-      <h1>Random doggo</h1>
+      <h1>🐶 Random doggo</h1>
       <div>
         <button id="refresh">Refresh</button>
       </div>

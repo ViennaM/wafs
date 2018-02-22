@@ -12,6 +12,8 @@ This client side single page web app shows a name list of all dog breeds, using 
 - Get pictures of a specific breed
 - Get a random picture of a dog
 
+![App screenshot](spa.png)
+
 ## Structure
 
 ### Actor diagram
@@ -28,7 +30,7 @@ This client side single page web app shows a name list of all dog breeds, using 
 - Declare variables at top of scope
 - Use short clear meaningful names (English)
 - Work in strict mode
-- camelCase your code if(code != Constructor || CONSTANTS)
+- camelCase your code if(code != Constructor ll CONSTANTS)
 - Place external scripts at the bottom of the page
 - Indent your code
 - Commit often, push once

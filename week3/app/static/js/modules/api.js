@@ -1,5 +1,5 @@
-import global from '/static/js/modules/global.js'
-import template from '/static/js/modules/template.js'
+import global from './global.js'
+import template from './template.js'
   // Api functions
   const api = {
     getData: function (page, breed) {

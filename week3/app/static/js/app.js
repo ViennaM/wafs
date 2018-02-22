@@ -2,8 +2,8 @@
 // - Modules
 // - Navigation active 
 
-import routes from '/static/js/modules/routes.js'
-import global from '/static/js/modules/global.js'
+import routes from './modules/routes.js'
+import global from './modules/global.js'
 
 (function () {
   'use strict'

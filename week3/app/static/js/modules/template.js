@@ -1,6 +1,6 @@
-import global from '/static/js/modules/global.js'
-import api from '/static/js/modules/api.js'
-import helper from '/static/js/modules/helper.js'
+import global from './global.js'
+import api from './api.js'
+import helper from './helper.js'
 
 const template = {
   init: function (page, breed) {

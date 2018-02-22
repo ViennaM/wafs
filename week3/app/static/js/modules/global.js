@@ -1,4 +1,4 @@
-import template from '/static/js/modules/template.js'
+import template from './template.js'
 
 const global = {
   elements: {

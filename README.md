@@ -1,51 +1,28 @@
-# wafs
+# Web App From Scratch
 The course repo for 'Web App From Scratch'
-Week 1: [https://viennam.github.io/wafs/week1/app](https://viennam.github.io/wafs/week1/app)
 
-Week 2: [https://viennam.github.io/wafs/week2/app](https://viennam.github.io/wafs/week2/app)
-
-## De voor- en nadelen van JavaScript libraries/frameworks
-### Voordelen
-- Minder code om te schrijven
-- Sneller te schrijven, dus minder kosten
-- Er is een hele community die ervoor zorgt dat de library of het framework verbetert (support team, forums)
-- Code is beter leesbaar 
-- Je hoeft meestal niet na te denken over browser compatibility, omdat dat ingebouwd zit
-- Veiliger dan alles zelf schrijven.
-
-### Nadelen
-- Je wordt soms beperkt door de mogelijkheden van het framework/de library.
-- Je leert niet hoe de achterliggende taal echt werkt.
-- Frameworks en libraries missen vaak de specifieke functionaliteit waar een groot project om vraagt.
-- Performance, je laadt vaak veel functionaliteit in die je niet nodig hebt.
-- Vaak nieuwe dingen om te leren als het framework zichzelf update.
-- Afhankelijk van andere mensen
+[Live demo](https://viennam.github.io/wafs/week3/app)
 
 
-## De voor- en nadelen van client-side single page web apps
-### Voordelen
-- Betere user experience omdat je de pagina maar 1 keer laadt.
-- Snel in gebruik, omdat de meeste resources maar 1 keer worden geladen.
-- Back-end en front-end kunnen los van elkaar staan.
-- Het is makkelijker om een mobiele app te maken omdat de backend code herbruikbaar is.
+## 🐕 Dog breeds
+This app shows a list of all dog breed names, using the [Dog CEO API](https://github.com/ElliottLandsborough/dog-ceo-api) and [Routie](https://github.com/jgallen23/routie) for hash routing.
 
-### Nadelen
-- SEO is moeilijker te implementeren.
-- Slechte performance, zwaar voor een browser, dus zal op mobiel minder goed werken.
-- Zware client frameworks zijn benodigd om de app te laden.
-- Onveilig wegens gebruik van XSS.
-- Naarmate je meer content op je site krijgt wordt de site steeds langzamer en een minder goede keuze (bijv. webshops)
-- JavaScript nodig om te laden dus slechte toegankelijkheid
-- Analytics tools zijn normaal gesproken bedoeld voor meerdere pagina’s.
+### Features
+- Search for a breed
+- Get pictures of a chosen breed
+- Get a random picture of a dog
 
-#### Bronnen
-[https://1stwebdesigner.com/web-frameworks/](https://1stwebdesigner.com/web-frameworks/)
+## Structure
 
-[https://davidwalsh.name/6-reasons-to-use-javascript-libraries-frameworks](https://davidwalsh.name/6-reasons-to-use-javascript-libraries-frameworks)
+### Actor diagram
+![Actor diagram](actor-diagram.png)
 
-[https://adamsilver.io/articles/the-disadvantages-of-single-page-applications/](https://adamsilver.io/articles/the-disadvantages-of-single-page-applications/)
+### Interaction diagram
+![Interaction diagram](interaction-diagram.png)
 
-[https://www.codeschool.com/beginners-guide-to-web-development/single-page-applications](https://www.codeschool.com/beginners-guide-to-web-development/single-page-applications)
+## Dog API
+[Dog CEO API](https://github.com/ElliottLandsborough/dog-ceo-api)
+
 
 ## Best practices
 - Don't use global variables/objects
@@ -57,22 +34,20 @@ Week 2: [https://viennam.github.io/wafs/week2/app](https://viennam.github.io/waf
 - Indent your code
 - Commit often, push once
 
+## Wishlist
+- Add sub breeds
+- Save / favorite / like / share breeds or pictures 
+- Random picture of breed in list
 
-## Pull requests
-9/02/2018
+## Sources
+- [Dog CEO API](https://github.com/ElliottLandsborough/dog-ceo-api)
 
-[Pull request Koos](https://github.com/hackshackshacks/wafs/pull/3)
+- [Routie](https://github.com/jgallen23/routie)
 
-[Pull request Victor](https://github.com/velomovies/wafs/pull/4)
+- [Loader image](https://imgur.com/gallery/YbkBxYb)
+
+## License
+[MIT License](https://mit-license.org/)
 
 
-16/02/2018
 
-[Pull request Koos](https://github.com/hackshackshacks/wafs/pull/4)
-
-## To do
-
-- [ ] Random afbeelding van ras in lijst toevoegen
-- [ ] Loader toevoegen
-- [ ] Lijsten stylen
-- [ ] Navigatie item active maken

@@ -5,11 +5,11 @@ The course repo for 'Web App From Scratch'
 
 
 ## 🐕 Dog breeds
-This app shows a list of all dog breed names, using the [Dog CEO API](https://github.com/ElliottLandsborough/dog-ceo-api) and [Routie](https://github.com/jgallen23/routie) for hash routing.
+This client side single page web app shows a name list of all dog breeds, using the [Dog CEO API](https://github.com/ElliottLandsborough/dog-ceo-api) and [Routie](https://github.com/jgallen23/routie) for hash routing.
 
 ### Features
 - Search for a breed
-- Get pictures of a chosen breed
+- Get pictures of a specific breed
 - Get a random picture of a dog
 
 ## Structure
@@ -21,8 +21,7 @@ This app shows a list of all dog breed names, using the [Dog CEO API](https://gi
 ![Interaction diagram](interaction-diagram.png)
 
 ## Dog API
-[Dog CEO API](https://github.com/ElliottLandsborough/dog-ceo-api)
-
+[Dog CEO API](https://github.com/ElliottLandsborough/dog-ceo-api): over 20,000 images of dogs programmaticaly accessible by over 120 breeds.
 
 ## Best practices
 - Don't use global variables/objects
@@ -38,6 +37,8 @@ This app shows a list of all dog breed names, using the [Dog CEO API](https://gi
 - Add sub breeds
 - Save / favorite / like / share breeds or pictures 
 - Random picture of breed in list
+- Translate breed list to Dutch
+- Submit pictures
 
 ## Sources
 - [Dog CEO API](https://github.com/ElliottLandsborough/dog-ceo-api)

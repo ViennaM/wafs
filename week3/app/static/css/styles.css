@@ -175,6 +175,12 @@ input:focus {
     width: 100%;
   }
   h1 {
-    font-size: 2em;
+    font-size: 1.8em;
+  }
+  section {
+    padding: .5em 1em;
+  }
+  button {
+    width: 100%;
   }
 }

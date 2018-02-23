@@ -47,7 +47,7 @@ This client side single page web app shows a name list of all dog breeds, using 
 
 - [Routie](https://github.com/jgallen23/routie)
 
-- [Loader image](https://imgur.com/gallery/YbkBxYb)
+- [Loader image](http://i.imgur.com/bZFIeky.gif)
 
 ## License
 [MIT License](https://mit-license.org/)

@@ -6,20 +6,24 @@ const global = {
     refresh: document.querySelector('#refresh')
   },
   handleEvents: function () {
-    global.elements.refresh.addEventListener('click', () => {
+    // Trigger random page when click refresh button
+    this.elements.refresh.addEventListener('click', () => {
       template.init('random')
     })
     // Trigger search function on input
-    global.elements.input.addEventListener('input', () => {
-      template.search(global.dataStorage, global.elements.input.value.toLowerCase())
+    this.elements.input.addEventListener('input', () => {
+      template.search(this.dataStorage, this.elements.input.value.toLowerCase())
     })
 
   },
   removeContent: function (breed) {
-    if (breed) {
-      return document.querySelector('#detail .content')
-    } else {
-      return document.querySelector(location.hash + ' .content')
+    // Define content to remove 
+    let content = function () {
+      if (breed) {
+        return document.querySelector('#detail .content')
+      } else {
+        return document.querySelector(location.hash + ' .content')
+      }
     }
 
     // Remove previous content before adding new content
@@ -27,6 +31,7 @@ const global = {
       content().removeChild(content().firstChild)
     }
   },
+  // Store data from api in memory
   dataStorage: []
 }
 

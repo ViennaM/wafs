@@ -1,5 +1,4 @@
 // To do:
-// - Modules
 // - Navigation active 
 
 import routes from './modules/routes.js'

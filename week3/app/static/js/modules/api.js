@@ -1,9 +1,9 @@
 import global from './global.js'
 import template from './template.js'
-  // Api functions
+
   const api = {
     getData: function (page, breed) {
-      // Set api url
+      // Define api url to request
       let url = function () {
         if (page === 'home') {
           return 'https://dog.ceo/api/breeds/list'
@@ -17,11 +17,11 @@ import template from './template.js'
         const request = new XMLHttpRequest()
         request.open('GET', url(), true)
         request.onload = () => {
-          resolve(request)
+          resolve(request) // Promise resolved
         }
         request.onerror = () => {
-          reject('error')
-          template.render('Nothing found...')
+          reject('error') // Promise rejected
+          template.render('Nothing found... Please try again later.')
         }
         request.send()
       })
@@ -30,7 +30,7 @@ import template from './template.js'
       if (result.status >= 200 && result.status < 400) {
         let data = JSON.parse(result.responseText)
         // Handle received data for page: home
-        if (location.hash === '#home') {
+        if (page === 'home') {
           // Store list data in memory
           if (global.dataStorage.length == 0) {
             global.dataStorage = data.message
@@ -38,11 +38,11 @@ import template from './template.js'
           template.home(data.message)
         }
         // Handle received data for page: random
-        else if (location.hash === '#random') {
+        else if (page === 'random') {
           template.random(data.message)
         }
         // Handle received data for page: detail
-        else {
+        else if (page === 'detail') {
           template.detail(data.message, breed, page)
         }
       }

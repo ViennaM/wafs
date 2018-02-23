@@ -4,71 +4,64 @@ import helper from './helper.js'
 
 const template = {
   init: function (page, breed) {
-    let content = function () {
-      if (breed) {
-        return document.querySelector('#detail .content')
-      } else {
-        return document.querySelector(location.hash + ' .content')
-      }
-    }
-    // Remove previous content before adding new content
-    while (content().firstChild) {
-      content().removeChild(content().firstChild)
-    }
-    global.elements.input.value = ''
-    let curBreed = breed,
-      curPage = page
-    // Handle list data from data storage when available
+    global.removeContent(breed) // Remove previous content
+    global.elements.input.value = '' // Empty search input
+    this.toggle(page) // Toggle right section
+
+    // Handle list data from data storage only when available
     if (page === 'home' && global.dataStorage.length > 0) {
       this.home(global.dataStorage)
     } else {
+      // Show loader
       document.querySelector(`#${page} .loader`).classList.remove('hide')
+
+      // Get api data from promise
       api.getData(page, breed)
-        // Promise resolved 
-        .then((data) => {
-          api.handleData(data, curBreed, page)
+        .then((data) => { // Promise resolved
+          api.handleData(data, breed, page) // Do something with data from api request
         })
-        // Catch errors
         .catch((err) => {
           console.log(err)
         })
     }
-    template.toggle(page)
 
   },
   search: function (data, value) {
     let newData = data.filter((breed) => {
       return breed.includes(value)
     })
-    let content = document.querySelector(location.hash + ' .content')
 
-    // Remove previous content before adding new content
-    while (content.firstChild) {
-      content.removeChild(content.firstChild)
-    }
-    template.home(newData)
+    global.removeContent() // Remove previous content
+
+    this.home(newData)
   },
   home: function (data) {
     const breedArr = data
-    let html = '<ul>'
-    breedArr.forEach((breed, i) => {
-      html += `
+
+    // When array is empty, give feedback
+    if (breedArr.length === 0) {
+      this.render('Nothing found...')
+    } else {
+      let html = '<ul>'
+      breedArr.forEach((breed, i) => {
+        html += `
         <li>
           <a href="#home/${breed}">${helper.capitalize(breed)}</a>
         </li>
         `
-    })
-    html += '</ul>'
-    this.render(html)
+      })
+      html += '</ul>'
+      this.render(html)
+    }
   },
   random: function (data) {
     let html = `<img src="${data}">`
     this.render(html)
   },
   detail: function (data, breed, page) {
-    var breed = helper.capitalize(breed)
+    var breed = helper.capitalize(breed) // Start breed with capital
     let html = `<h1>${breed}</h1>`
-    // Shuffle images array and only show the first 15
+    // Shuffle images in array and only show the first 15
     helper.shuffle(data).slice(0, 15).forEach((img) => {
       html += `
             <img src="${img}">
@@ -76,25 +69,31 @@ const template = {
     })
     this.render(html, breed, page)
   },
-  // Hide all sections
   hideSections: function () {
+    // Hide all sections
     const sections = document.querySelectorAll('section')
     sections.forEach((section) => {
       section.classList.remove('active')
     })
   },
   toggle: function (page) {
-    // Show current section
+    // Define page to show
     if (page === 'detail') {
       var active = document.querySelector('#detail')
     } else {
       var page = location.hash
       var active = document.querySelector(page)
     }
-    template.hideSections()
-    active.classList.add('active')
+    this.hideSections() // Hide all sections
+    active.classList.add('active') // Show section which is active
   },
   render: function (html, breed, page) {
+    // Hide loader
+    document.querySelectorAll('.loader').forEach(function(loader) {
+      loader.classList.add('hide')
+    })
+   
+    // Define wrapper to insert html 
     let content = function () {
       if (breed) {
         return document.querySelector('#detail .content')
@@ -102,22 +101,8 @@ const template = {
         return document.querySelector(location.hash + ' .content')
       }
     }
-    // Define element ID for hiding loader
-    let elId = function () {
-      if (page) {
-        return '#detail'
-      } else {
-        return location.hash
-      }
-    }
-    document.querySelector(elId() + ' .loader').classList.add('hide')
-
-    // Check if html to render is more than <ul></ul>
-    if (html.length > 9) {
-      content().insertAdjacentHTML('beforeend', html)
-    } else {
-      content().insertAdjacentHTML('beforeend', 'Nothing found...')
-    }
+    // Insert html into content wrapper
+    content().insertAdjacentHTML('beforeend', html) //
   }
 }
 
